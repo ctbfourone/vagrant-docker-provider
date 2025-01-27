@@ -5,11 +5,12 @@
 ## ----------------------------------------------------------------------
 
 # These can be overidden with env vars.
-REGISTRY ?= rofrano
+REGISTRY ?= ctbmozilla
 IMAGE_NAME ?= vagrant-provider
-IMAGE_TAG ?= ubuntu
+IMAGE_TAG ?= debian
 IMAGE ?= $(REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG)
-PLATFORM ?= "linux/amd64,linux/arm64"
+#PLATFORM ?= "linux/amd64,linux/arm64"
+PLATFORM ?= "linux/arm64"
 
 # Set up the Docker build environment
 .EXPORT_ALL_VARIABLES:
@@ -38,7 +39,8 @@ init:	## Creates the buildx instance
 .PHONY: build
 build:	## Build all of the project Docker images
 	$(info Building $(IMAGE) for $(PLATFORM)...)
-	docker buildx build --file Dockerfile.$(IMAGE_TAG)  --pull --platform=$(PLATFORM) --tag $(IMAGE) --push .
+	docker buildx build --file Dockerfile.$(IMAGE_TAG)  --pull --platform=$(PLATFORM) --tag $(IMAGE) .
+  # --push
 
 .PHONY: run
 run:	## Run a vagrant VM using this image
